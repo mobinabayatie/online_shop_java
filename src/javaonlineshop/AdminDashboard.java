@@ -37,7 +37,6 @@ public class AdminDashboard extends JFrame {
         sidePanel.add(orderBtn);
         sidePanel.add(discountBtn);
 
-        // Main Panel with CardLayout for switching sections
         mainPanel = new JPanel(new CardLayout());
 
         JPanel productPanel = createProductPanel();
@@ -52,7 +51,6 @@ public class AdminDashboard extends JFrame {
         mainPanel.add(orderPanel, "Orders");
         mainPanel.add(discountPanel, "Discounts");
 
-        // Sidebar button actions
         productBtn.addActionListener(e -> switchPanel("Products"));
         logoutBtn.addActionListener(e -> {
             JOptionPane.showMessageDialog(this, "🚪 Logging out...");
@@ -83,6 +81,9 @@ public class AdminDashboard extends JFrame {
 
         JButton addProductBtn = new JButton("➕ Add Product");
         JButton deleteProductBtn = new JButton("❌ Delete Product");
+        JButton restockBtn = new JButton("📦 Restock Product");
+        restockBtn.addActionListener(e -> restockProduct());
+
 
         addProductBtn.addActionListener(e -> addProduct());
         deleteProductBtn.addActionListener(e -> deleteProduct());
@@ -90,10 +91,42 @@ public class AdminDashboard extends JFrame {
         panel.add(new JScrollPane(productTable), BorderLayout.CENTER);
         panel.add(addProductBtn, BorderLayout.NORTH);
         panel.add(deleteProductBtn, BorderLayout.SOUTH);
+        panel.add(restockBtn, BorderLayout.EAST);
         return panel;
     }
 
-    private JPanel createUserPanel() {
+    private void restockProduct() {
+        int selectedRow = productTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "❌ Select a product to restock!");
+            return;
+        }
+
+        int productId = (int) productModel.getValueAt(selectedRow, 0);
+        String input = JOptionPane.showInputDialog(this, "Enter quantity to add:");
+        if (input == null || input.trim().isEmpty()) return;
+
+        try {
+            int addQuantity = Integer.parseInt(input);
+            try (Connection conn = DBConnection.getConnection();
+                 PreparedStatement ps = conn.prepareStatement("UPDATE products SET quantity = quantity + ? WHERE id = ?")) {
+                ps.setInt(1, addQuantity);
+                ps.setInt(2, productId);
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(this, "✅ Stock updated!");
+                productModel.setRowCount(0);
+                loadProducts();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "❌ Invalid number!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+	private JPanel createUserPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         userModel = new DefaultTableModel(new String[]{"ID", "Username", "Email"}, 0);
         userTable = new JTable(userModel);
