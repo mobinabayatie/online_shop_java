@@ -52,13 +52,13 @@ public class LoginForm extends JFrame {
 
         JButton loginBtn = new JButton("🚀 Login");
         loginBtn.setBounds(50, 200, 120, 40);
-        loginBtn.setBackground(new Color(135, 206, 250)); // Light Sky Blue
+        loginBtn.setBackground(new Color(135, 206, 250)); 
         loginBtn.setFont(new Font("Arial", Font.BOLD, 14));
         panel.add(loginBtn);
 
         JButton signupBtn = new JButton("📝 Sign Up");
         signupBtn.setBounds(190, 200, 120, 40);
-        signupBtn.setBackground(new Color(144, 238, 144)); // Light Green
+        signupBtn.setBackground(new Color(144, 238, 144)); 
         signupBtn.setFont(new Font("Arial", Font.BOLD, 14));
         panel.add(signupBtn);
 
@@ -67,7 +67,6 @@ public class LoginForm extends JFrame {
         forgotBtn.setBackground(Color.LIGHT_GRAY);
         panel.add(forgotBtn);
 
-        // Switching between panels smoothly
         loginBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
@@ -90,7 +89,7 @@ public class LoginForm extends JFrame {
 
         signupBtn.addActionListener(e -> {
             dispose();
-            new SignUpForm(); // Instead of RegisterForm()
+            new SignUpForm();
         });
 
 

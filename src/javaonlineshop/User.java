@@ -1,18 +1,20 @@
 package javaonlineshop;
 
-public class User {
+public class User extends Account {
     private int id;
-    private String username;
     private String email;
 
-    public User(int id, String username, String email) {
+    public User(int id, String username, String password, String email) {
+        super(username, password);
         this.id = id;
-        this.username = username;
         this.email = email;
     }
 
-    public int getId() { return id; }
-    public String getUsername() { return username; }
-    public String getEmail() { return email; }
-}
+    public int getId() {
+        return id;
+    }
 
+    public String getEmail() {
+        return email;
+    }
+}

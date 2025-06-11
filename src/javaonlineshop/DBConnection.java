@@ -47,5 +47,44 @@ public class DBConnection {
 	    }
 	    return -1;
 	}
+   public static User getUserByUsername(String username) {
+	    String query = "SELECT * FROM users WHERE username = ?";
+	    try (Connection conn = getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(query)) {
+	        stmt.setString(1, username);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            return new User(
+	                rs.getInt("id"),
+	                rs.getString("username"),
+	                rs.getString("password"),
+	                rs.getString("email")
+	            );
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+
+	public static Admin getAdminByUsername(String username) {
+	    String query = "SELECT * FROM admin WHERE username = ?";
+	    try (Connection conn = getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(query)) {
+	        stmt.setString(1, username);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            return new Admin(
+	                rs.getInt("id"),
+	                rs.getString("username"),
+	                rs.getString("password")
+	            );
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+
 
 }

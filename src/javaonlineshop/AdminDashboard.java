@@ -67,8 +67,9 @@ public class AdminDashboard extends JFrame {
         setVisible(true);
     }
     
+   
 
-    private void switchPanel(String panelName) {
+	private void switchPanel(String panelName) {
         CardLayout cl = (CardLayout) (mainPanel.getLayout());
         cl.show(mainPanel, panelName);
     }

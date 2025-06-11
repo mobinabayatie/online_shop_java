@@ -23,7 +23,6 @@ public class UserDashboard extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Sidebar Navigation Panel
         JPanel sidePanel = new JPanel(new GridLayout(6, 1));
         sidePanel.setBackground(new Color(25, 25, 112));
 
@@ -39,7 +38,6 @@ public class UserDashboard extends JFrame {
         sidePanel.add(logoutBtn);
         sidePanel.add(backBtn);
 
-        // Main Content Panel
         mainPanel = new JPanel(new CardLayout());
 
         JPanel shopPanel = createShopPanel();
@@ -84,7 +82,7 @@ public class UserDashboard extends JFrame {
         return panel;
     }
     private void loadProducts() {
-        productModel.setRowCount(0); // Clear previous data
+        productModel.setRowCount(0); 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM products");
              ResultSet rs = ps.executeQuery()) {
@@ -188,13 +186,11 @@ public class UserDashboard extends JFrame {
             e.printStackTrace();
         }
     }
- // Method to switch between panels
     private void switchPanel(String panelName) {
         CardLayout cl = (CardLayout) (mainPanel.getLayout());
         cl.show(mainPanel, panelName);
     }
 
-    // Method to add products to the cart
     private void addToCart() {
         int selectedRow = productTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -207,12 +203,11 @@ public class UserDashboard extends JFrame {
             rowData[i] = productModel.getValueAt(selectedRow, i);
         }
         cartModel.addRow(rowData);
-        totalPrice += (double) rowData[2];  // Add price to total
+        totalPrice += (double) rowData[2];  
         totalPriceLabel.setText("Total Price: $" + String.format("%.2f", totalPrice));
         JOptionPane.showMessageDialog(this, "✅ Product added to cart!");
     }
 
-    // Method to remove products from the cart
     private void removeFromCart() {
         int selectedRow = cartTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -226,18 +221,16 @@ public class UserDashboard extends JFrame {
         JOptionPane.showMessageDialog(this, "❌ Product removed from cart!");
     }
 
-    // Method to log out and return to the login screen
     private void logout() {
         JOptionPane.showMessageDialog(this, "🚪 Logging out...");
         dispose();
-        new LoginForm(); // Ensure LoginForm exists
+        new LoginForm(); 
     }
 
-    // Method to go back to the login screen
     private void goBack() {
         JOptionPane.showMessageDialog(this, "🔙 Going back...");
         dispose();
-        new LoginForm(); // Ensure LoginForm exists
+        new LoginForm(); 
     }
 
 }
